@@ -6,7 +6,7 @@ import { LoadingProperty } from './auth'
 export const fetchProducts = createAsyncThunk(
 	'auth/fetchProducts',
 	async () => {
-		const { data } = await axios.get<ProductParams[]>(`/api/products`)
+		const { data } = await axios.get<ProductParams[]>(`/api/products?sort=new`)
 		return data
 	}
 )

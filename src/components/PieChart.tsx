@@ -1,16 +1,21 @@
 import React from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
+import { ReviewState } from '../pages/Analytics'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-const PieChart = () => {
+interface IPieChartProps {
+	stats: ReviewState[]
+}
+
+const PieChart: React.FC<IPieChartProps> = ({ stats }) => {
 	const data = {
-		labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+		labels: stats.map(label => label.title),
 		datasets: [
 			{
-				label: '# of Votes',
-				data: [62, 19, 3, 5, 2, 1],
+				label: 'просмотров',
+				data: stats.map(label => label.viewsCount),
 				backgroundColor: [
 					'rgba(255, 99, 132, 0.2)',
 					'rgba(54, 162, 235, 0.2)',

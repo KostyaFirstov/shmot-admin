@@ -14,6 +14,7 @@ import { ScrollToTop } from './utils/ScrollToTop'
 import { useSelector } from 'react-redux'
 import { selectThemeValue } from './redux/slices/theme'
 import ProductPage from './pages/ProductPage'
+import CreateProduct from './pages/CreateProduct'
 
 function App() {
 	const theme = useSelector(selectThemeValue)
@@ -32,6 +33,7 @@ function App() {
 					<Route path='/admin/reviews' element={<Reviews />} />
 					<Route path='/admin/drops' element={<Drops />} />
 					<Route path='/admin/product/:title' element={<ProductPage />} />
+					<Route path='/admin/add-product' element={<CreateProduct />} />
 				</Route>
 			</Routes>
 		</div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import ContentLayout from '../layouts/ContentLayout'
-import Table from '../components/Table'
+import Table from '../components/TableProducts'
 import StatisticCard from '../components/StatisticCard'
 import Modal from '../components/Modal'
 import Form from '../components/Form'
@@ -9,7 +9,6 @@ import { fetchProducts, selectProducts } from '../redux/slices/products'
 import { useAppDispatch } from '../redux/store'
 
 const Products = () => {
-	const [modal, setModal] = React.useState(false)
 	const { items, status } = useSelector(selectProducts)
 
 	const appDispatch = useAppDispatch()
@@ -17,10 +16,6 @@ const Products = () => {
 	React.useEffect(() => {
 		appDispatch(fetchProducts())
 	}, [])
-
-	const handleAddProduct = () => {
-		setModal(true)
-	}
 
 	const productCards = [
 		{
@@ -44,7 +39,7 @@ const Products = () => {
 			),
 			name: 'Всего товаров',
 			param: `${items.length}`,
-			error: null
+			growth: null
 		},
 		{
 			icon: (
@@ -67,28 +62,23 @@ const Products = () => {
 			),
 			name: 'Добавить товар',
 			param: '',
-			error: null,
-			handleClick: handleAddProduct
+			growth: null,
+			link: '/admin/add-product'
 		}
 	]
 
 	return (
-		<>
-			<ContentLayout title='Все товары'>
-				<div className='statistic__wrapper'>
-					{productCards.map((card, index) => (
-						<StatisticCard key={index} {...card} />
-					))}
-				</div>
-				<Table
-					headers={['Наименование', 'Размеры', 'Количество', 'Цена']}
-					items={items}
-				/>
-			</ContentLayout>
-			{modal && (
-				<Modal title='Добавить товар' children={<Form />} setModal={setModal} />
-			)}
-		</>
+		<ContentLayout title='Все товары'>
+			<div className='statistic__wrapper'>
+				{productCards.map((card, index) => (
+					<StatisticCard key={index} {...card} />
+				))}
+			</div>
+			<Table
+				headers={['Наименование', 'Размеры', 'Количество', 'Цена']}
+				products={items}
+			/>
+		</ContentLayout>
 	)
 }
 

@@ -11,7 +11,7 @@ import {
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import axios from '../axios'
-import { UserStatsState } from '../pages/Main'
+import { StatsState } from '../pages/Main'
 
 ChartJS.register(
 	CategoryScale,
@@ -36,11 +36,11 @@ export const options = {
 	}
 }
 
-interface ILineChart {
-	userStats: UserStatsState[]
+interface ILineChartProps {
+	userStats: StatsState[]
 }
 
-const LineChart: React.FC<ILineChart> = ({ userStats }) => {
+const LineChart: React.FC<ILineChartProps> = ({ userStats }) => {
 	const data = {
 		labels: userStats.map(label => label.month),
 		datasets: [

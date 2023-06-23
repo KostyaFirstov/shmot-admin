@@ -1,6 +1,5 @@
 import React from 'react'
 import ContentLayout from '../layouts/ContentLayout'
-import Table from '../components/Table'
 
 const Drops = () => {
 	return (

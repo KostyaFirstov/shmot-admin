@@ -1,37 +1,47 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 interface IStatisticCardProps {
 	icon: React.ReactElement
 	name: string
 	param: string
-	error: boolean | null
-	handleClick?: () => void
+	growth: boolean | null
+	percent?: number
+	link?: string
 }
 
 const StatisticCard: React.FC<IStatisticCardProps> = ({
 	icon,
 	name,
 	param,
-	error,
-	handleClick
+	growth,
+	percent,
+	link
 }) => {
 	return (
-		<div
-			onClick={handleClick}
-			className={`${
-				error === null
-					? 'statistic__item-usuall'
-					: error
-					? 'statistic__item-error'
-					: ''
-			} ${handleClick ? 'click' : ''} statistic__item`}
-		>
-			<div className='statistic__icon'>{icon}</div>
-			<div className='statistic__info'>
-				<div className='statistic__name'>{name}</div>
-				<div className='statistic__param'>{param}</div>
+		<Link to={`${link ? link : ''}`}>
+			<div
+				className={`${
+					growth === null
+						? 'statistic__item-usuall'
+						: !growth
+						? 'statistic__item-error'
+						: ''
+				} statistic__item`}
+			>
+				<div className='statistic__icon'>{icon}</div>
+				<div className='statistic__info'>
+					<div className='statistic__name'>{name}</div>
+					<div className='statistic__param'>{param}</div>
+					{percent && (
+						<span className='statistic__percent'>
+							{growth ? '+' : '-'}
+							{percent}%
+						</span>
+					)}
+				</div>
 			</div>
-		</div>
+		</Link>
 	)
 }
 

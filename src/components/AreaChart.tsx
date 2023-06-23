@@ -11,6 +11,7 @@ import {
 	Legend
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
+import { StatsState } from '../pages/Main'
 
 ChartJS.register(
 	CategoryScale,
@@ -27,31 +28,34 @@ export const options = {
 	responsive: true,
 	plugins: {
 		legend: {
-			position: 'top' as const
+			position: 'bottom' as const
 		},
 		title: {
-			display: true,
+			display: false,
 			text: 'Chart.js Line Chart'
 		}
 	}
 }
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
-
-export const data = {
-	labels,
-	datasets: [
-		{
-			fill: true,
-			label: 'Количество пользователей',
-			data: labels.map(() => Math.random() * 10),
-			borderColor: 'rgb(53, 162, 235)',
-			backgroundColor: 'rgba(53, 162, 235, 0.5)'
-		}
-	]
+interface IAreaChartProps {
+	label: string
+	stats: StatsState[]
 }
 
-const AreaChart = () => {
+const AreaChart: React.FC<IAreaChartProps> = ({ label, stats }) => {
+	const data = {
+		labels: stats.map(label => label.month),
+		datasets: [
+			{
+				fill: true,
+				label: label,
+				data: stats.map(stat => stat.value),
+				borderColor: '#e5e5e5',
+				backgroundColor: '#23cfc9'
+			}
+		]
+	}
+
 	return <Line options={options} data={data} />
 }
 

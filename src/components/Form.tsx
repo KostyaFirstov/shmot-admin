@@ -1,10 +1,11 @@
 import React from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import axios from '../axios'
+import { useNavigate } from 'react-router-dom'
 
-type Inputs = {
+export type ProductInputs = {
 	title: string
 	desc: string
-	img: string
 	categories: string[]
 	sizes: string[]
 	color: string
@@ -16,20 +17,44 @@ type Inputs = {
 }
 
 const Form = () => {
+	const navigate = useNavigate()
+	const [imageUrl, setImageUrl] = React.useState('')
+
 	const {
 		register,
 		handleSubmit,
 		setError,
 		formState: { errors, isValid }
-	} = useForm<Inputs>({
+	} = useForm<ProductInputs>({
 		mode: 'onSubmit'
 	})
 
-	const onSubmit: SubmitHandler<Inputs> = async data => {
+	const handleChangeFile = async (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		try {
+			const formData = new FormData()
+			if (event.target.files) {
+				const file = event.target.files[0]
+				formData.append('image', file)
+				const { data } = await axios.post('/upload', formData)
+				setImageUrl(data.url)
+			}
+		} catch (error) {
+			console.warn(error)
+			alert('Ошибка при загрузке файлов')
+		}
+	}
+
+	const onClickRemoveImage = () => {
+		setImageUrl('')
+	}
+
+	const onSubmit: SubmitHandler<ProductInputs> = async data => {
 		const productData = {
 			title: data.title,
 			desc: data.desc,
-			img: data.img,
+			img: imageUrl,
 			categories: data.categories,
 			sizes: data.sizes,
 			color: data.color,
@@ -39,6 +64,11 @@ const Form = () => {
 			amount: data.amount,
 			popular: data.popular
 		}
+
+		// appDispatch(createProduct(productData))
+
+		await axios.post('/api/products', productData)
+		navigate(`/admin/products/`)
 	}
 
 	return (
@@ -69,17 +99,7 @@ const Form = () => {
 				)}
 			</div>
 			<div className='form__input'>
-				<input
-					type='file'
-					className={errors.img && 'error'}
-					placeholder='Описание'
-					{...register('img', {
-						required: true
-					})}
-				/>
-				{errors.img && (
-					<div className='form__error'>Изображение указано некорректно</div>
-				)}
+				<input type='file' onChange={handleChangeFile} />
 			</div>
 			<div className='form__input'>
 				<input
@@ -99,7 +119,7 @@ const Form = () => {
 					type='text'
 					className={errors.sizes && 'error'}
 					placeholder='Размеры'
-					{...register('desc', {
+					{...register('sizes', {
 						required: true
 					})}
 				/>
@@ -112,7 +132,7 @@ const Form = () => {
 					type='text'
 					className={errors.color && 'error'}
 					placeholder='Цвет'
-					{...register('desc', {
+					{...register('color', {
 						required: true
 					})}
 				/>
@@ -125,7 +145,7 @@ const Form = () => {
 					type='text'
 					className={errors.brand && 'error'}
 					placeholder='Бренд'
-					{...register('desc', {
+					{...register('brand', {
 						required: true
 					})}
 				/>
@@ -148,7 +168,7 @@ const Form = () => {
 			</div>
 			<div className='form__input'>
 				<input
-					type='number'
+					type='text'
 					className={errors.gender && 'error'}
 					placeholder='Пол'
 					{...register('gender', {
