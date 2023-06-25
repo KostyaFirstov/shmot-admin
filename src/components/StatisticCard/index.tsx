@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-interface IStatisticCardProps {
+export interface IStatisticCardProps {
 	icon: React.ReactElement
 	name: string
 	param: string

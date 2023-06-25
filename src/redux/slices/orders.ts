@@ -9,6 +9,14 @@ export const fetchOrders = createAsyncThunk('auth/fetchOrders', async () => {
 	return data
 })
 
+export const fetchRemoveOrder = createAsyncThunk(
+	'auth/fetchRemoveOrder',
+	async (id: number) => {
+		const { data } = await axios.delete<OrderState[]>(`/api/orders/${id}`)
+		return data
+	}
+)
+
 interface IOrderliceState {
 	orders: OrderState[]
 	status: LoadingProperty
@@ -22,7 +30,11 @@ const initialState: IOrderliceState = {
 export const orderSlice = createSlice({
 	name: 'orders',
 	initialState,
-	reducers: {},
+	reducers: {
+		removeOrder: (state, action: PayloadAction<number>) => {
+			state.orders = state.orders.filter(elem => elem._id !== action.payload)
+		}
+	},
 	extraReducers: builder => {
 		// orders
 
@@ -45,6 +57,7 @@ export const orderSlice = createSlice({
 })
 
 export const selectOrder = (state: RootState) => state.orders
-
 export const orderReducer = orderSlice.reducer
+
+export const { removeOrder } = orderSlice.actions
 export default orderSlice.reducer

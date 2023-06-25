@@ -1,12 +1,10 @@
 import React from 'react'
 import ContentLayout from '../layouts/ContentLayout'
-import Table from '../components/TableProducts'
-import StatisticCard from '../components/StatisticCard'
-import Modal from '../components/Modal'
-import Form from '../components/Form'
+import TableProducts from '../components/Tables/TableProducts'
 import { useSelector } from 'react-redux'
 import { fetchProducts, selectProducts } from '../redux/slices/products'
 import { useAppDispatch } from '../redux/store'
+import StatisticBlock from '../components/StatisticBlock'
 
 const Products = () => {
 	const { items, status } = useSelector(selectProducts)
@@ -63,20 +61,17 @@ const Products = () => {
 			name: 'Добавить товар',
 			param: '',
 			growth: null,
-			link: '/admin/add-product'
+			link: '/admin/product-add'
 		}
 	]
 
 	return (
 		<ContentLayout title='Все товары'>
-			<div className='statistic__wrapper'>
-				{productCards.map((card, index) => (
-					<StatisticCard key={index} {...card} />
-				))}
-			</div>
-			<Table
+			<StatisticBlock cards={productCards} status={status} />
+			<TableProducts
 				headers={['Наименование', 'Размеры', 'Количество', 'Цена']}
 				products={items}
+				status={status}
 			/>
 		</ContentLayout>
 	)

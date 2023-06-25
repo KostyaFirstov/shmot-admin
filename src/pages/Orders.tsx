@@ -1,10 +1,10 @@
 import React from 'react'
 import ContentLayout from '../layouts/ContentLayout'
-import Table from '../components/TableProducts'
-import StatisticCard from '../components/StatisticCard'
+import TableOrders from '../components/Tables/TableOrders'
 import { fetchOrders, selectOrder } from '../redux/slices/orders'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../redux/store'
+import StatisticBlock from '../components/StatisticBlock'
 
 const Orders = () => {
 	const { orders, status } = useSelector(selectOrder)
@@ -42,14 +42,11 @@ const Orders = () => {
 
 	return (
 		<ContentLayout title='Все заказы'>
-			<div className='statistic__wrapper'>
-				{ordersCards.map((card, index) => (
-					<StatisticCard key={index} {...card} />
-				))}
-			</div>
-			<Table
+			<StatisticBlock cards={ordersCards} status={status} />
+			<TableOrders
 				headers={['Пользователь', 'Статус', 'Цена', 'Дата']}
 				orders={orders}
+				status={status}
 			/>
 		</ContentLayout>
 	)

@@ -1,10 +1,10 @@
 import React from 'react'
 import ContentLayout from '../layouts/ContentLayout'
-import Table from '../components/TableProducts'
+import TableReviews from '../components/Tables/TableReviews'
 import { useAppDispatch } from '../redux/store'
 import { fetchReviews, selectReviews } from '../redux/slices/reviews'
 import { useSelector } from 'react-redux'
-import StatisticCard from '../components/StatisticCard'
+import StatisticBlock from '../components/StatisticBlock'
 
 const Reviews = () => {
 	const { reviews, status } = useSelector(selectReviews)
@@ -67,14 +67,11 @@ const Reviews = () => {
 
 	return (
 		<ContentLayout title='Обзоры'>
-			<div className='statistic__wrapper'>
-				{reviewsCards.map((review, index) => (
-					<StatisticCard key={index} {...review} />
-				))}
-			</div>
-			<Table
+			<StatisticBlock cards={reviewsCards} status={status} />
+			<TableReviews
 				headers={['Название', 'Описание', 'Просмотры', 'Дата']}
 				reviews={reviews}
+				status={status}
 			/>
 		</ContentLayout>
 	)

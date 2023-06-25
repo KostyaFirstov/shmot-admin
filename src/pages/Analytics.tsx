@@ -14,6 +14,7 @@ export type RequestsState = {
 }
 
 export type ReviewState = {
+	_id: number
 	title: number
 	tags: string[]
 	viewsCount: number

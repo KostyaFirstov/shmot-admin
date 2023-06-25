@@ -1,20 +1,20 @@
 import React from 'react'
 import ContentLayout from '../layouts/ContentLayout'
-import TableUsers from '../components/Tables/TableUsers'
 import { useAppDispatch } from '../redux/store'
-import { fetchUsers, selectUsers } from '../redux/slices/users'
 import { useSelector } from 'react-redux'
+import TableCategories from '../components/Tables/TableCategories'
+import { fetchCategories, selectFilters } from '../redux/slices/filters'
 import StatisticBlock from '../components/StatisticBlock'
 
-const Users = () => {
-	const { users, status } = useSelector(selectUsers)
+const Drops = () => {
 	const appDispatch = useAppDispatch()
+	const { categories, status } = useSelector(selectFilters)
 
 	React.useEffect(() => {
-		appDispatch(fetchUsers())
+		appDispatch(fetchCategories())
 	}, [])
 
-	const userCards = [
+	const categoriesCards = [
 		{
 			icon: (
 				<svg
@@ -34,8 +34,8 @@ const Users = () => {
 					/>
 				</svg>
 			),
-			name: 'Всего пользователей',
-			param: `${users.length}`,
+			name: 'Всего категорий',
+			param: `${categories.length}`,
 			growth: null
 		},
 		{
@@ -57,23 +57,23 @@ const Users = () => {
 					/>
 				</svg>
 			),
-			name: 'Добавить пользователя',
+			name: 'Добавить категорию',
 			param: '',
 			growth: null,
-			link: '/admin/user/add'
+			link: '/admin/brand/add'
 		}
 	]
 
 	return (
-		<ContentLayout title='Пользователи'>
-			<StatisticBlock cards={userCards} status={status} />
-			<TableUsers
-				headers={['Имя', 'Почта', 'Заказов', 'Дата']}
-				users={users}
+		<ContentLayout title='Предстоящие дропы'>
+			<StatisticBlock cards={categoriesCards} status={status} />
+			<TableCategories
+				headers={['Название', 'Ссылка']}
+				categories={categories}
 				status={status}
 			/>
 		</ContentLayout>
 	)
 }
 
-export default Users
+export default Drops

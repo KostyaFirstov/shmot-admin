@@ -19,7 +19,6 @@ const ProductPage = () => {
 
 		fetchProduct()
 	}, [])
-	console.log(product)
 
 	if (product) {
 		return <div>{product.brand}</div>

@@ -8,8 +8,16 @@ export const fetchUsers = createAsyncThunk('auth/fetchUsers', async () => {
 	return data
 })
 
+export const fetchRemoveUser = createAsyncThunk(
+	'auth/fetchRemoveUsers',
+	async (id: number) => {
+		const { data } = await axios.delete<AccountData[]>(`/api/users/${id}`)
+		return data
+	}
+)
+
 export type AccountData = {
-	id: number
+	_id: number
 	username: string
 	email: string
 	orders: number
@@ -32,7 +40,11 @@ const initialState: IUserSliceState = {
 export const usersSlice = createSlice({
 	name: 'users',
 	initialState,
-	reducers: {},
+	reducers: {
+		removeUser: (state, action: PayloadAction<number>) => {
+			state.users = state.users.filter(elem => elem._id !== action.payload)
+		}
+	},
 	extraReducers: builder => {
 		// users
 
@@ -55,6 +67,7 @@ export const usersSlice = createSlice({
 })
 
 export const selectUsers = (state: RootState) => state.users
-
 export const usersReducer = usersSlice.reducer
+
+export const { removeUser } = usersSlice.actions
 export default usersSlice.reducer

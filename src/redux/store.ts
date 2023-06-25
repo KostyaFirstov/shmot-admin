@@ -5,6 +5,8 @@ import products from './slices/products'
 import users from './slices/users'
 import orders from './slices/orders'
 import reviews from './slices/reviews'
+import drops from './slices/drops'
+import filters from './slices/filters'
 
 export const store = configureStore({
 	reducer: {
@@ -12,7 +14,9 @@ export const store = configureStore({
 		products,
 		users,
 		orders,
-		reviews
+		reviews,
+		drops,
+		filters
 	}
 })
 

@@ -8,7 +8,7 @@ import TimeAgo from 'react-timeago'
 import AreaChart from '../components/AreaChart'
 
 export type AccountState = {
-	id: number
+	_id: number
 	username: string
 	email: string
 	orders: number
@@ -19,7 +19,7 @@ export type AccountState = {
 }
 
 export type OrderState = {
-	id: number
+	_id: number
 	userName: string
 	userId: string
 	products: []
@@ -150,10 +150,8 @@ const Main = () => {
 		getOrders()
 	}, [])
 
-	console.log(orderStats)
-
 	return (
-		<ContentLayout title='Приветствую, Vitya.'>
+		<ContentLayout title='Приветствую, Kostya.'>
 			<div className='statistic'>
 				<div className='statistic__desc'>
 					<h2>Статистика за последний месяц:</h2>

@@ -1,8 +1,13 @@
 import React from 'react'
-import Form from '../components/Form'
+import ProductForm from '../components/Forms/ProductForm'
+import ContentLayout from '../layouts/ContentLayout'
 
 const AddProduct = () => {
-	return <Form />
+	return (
+		<ContentLayout title='Создать товар'>
+			<ProductForm />
+		</ContentLayout>
+	)
 }
 
 export default AddProduct

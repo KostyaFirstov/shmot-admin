@@ -1,5 +1,4 @@
 import React from 'react'
-import Logo from './components/Logo'
 import { Route, Routes } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout'
 import Main from './pages/Main'
@@ -15,6 +14,8 @@ import { useSelector } from 'react-redux'
 import { selectThemeValue } from './redux/slices/theme'
 import ProductPage from './pages/ProductPage'
 import CreateProduct from './pages/CreateProduct'
+import Categories from './pages/Categories'
+import Brands from './pages/Brands'
 
 function App() {
 	const theme = useSelector(selectThemeValue)
@@ -32,8 +33,10 @@ function App() {
 					<Route path='/admin/orders' element={<Orders />} />
 					<Route path='/admin/reviews' element={<Reviews />} />
 					<Route path='/admin/drops' element={<Drops />} />
+					<Route path='/admin/categories' element={<Categories />} />
+					<Route path='/admin/brands' element={<Brands />} />
 					<Route path='/admin/product/:title' element={<ProductPage />} />
-					<Route path='/admin/add-product' element={<CreateProduct />} />
+					<Route path='/admin/product-add' element={<CreateProduct />} />
 				</Route>
 			</Routes>
 		</div>

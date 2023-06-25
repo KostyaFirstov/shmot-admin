@@ -11,6 +11,14 @@ export const fetchProducts = createAsyncThunk(
 	}
 )
 
+export const fetchRemoveProduct = createAsyncThunk(
+	'auth/fetchRemoveProduct',
+	async (id: number) => {
+		const { data } = await axios.delete<ProductParams[]>(`/api/products/${id}`)
+		return data
+	}
+)
+
 export type FetchProductsParams = {
 	gender: string
 	categoryValue: string
@@ -50,7 +58,11 @@ const initialState: IProductsSliceState = {
 export const productsSlice = createSlice({
 	name: 'products',
 	initialState,
-	reducers: {},
+	reducers: {
+		removeProduct: (state, action: PayloadAction<number>) => {
+			state.items = state.items.filter(elem => elem._id !== action.payload)
+		}
+	},
 	extraReducers: builder => {
 		// PRODUCTS
 
@@ -73,7 +85,7 @@ export const productsSlice = createSlice({
 })
 
 export const selectProducts = (state: RootState) => state.products
-
 export const productsReducer = productsSlice.reducer
 
+export const { removeProduct } = productsSlice.actions
 export default productsSlice.reducer

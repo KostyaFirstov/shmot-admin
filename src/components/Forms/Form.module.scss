@@ -1,0 +1,123 @@
+@import '../../scss/vairables';
+
+.form {
+	padding: 24px 0;
+	&__title {
+		text-align: center;
+	}
+
+	&__wrapper {
+		display: flex;
+		justify-content: center;
+		margin-top: 36px;
+	}
+
+	&__input {
+		width: 100%;
+		margin-bottom: 10px;
+		position: relative;
+		display: flex;
+	}
+
+	&__input input,
+	&__input textarea {
+		border: 2px solid $gray-medium-color;
+		border-radius: $small-radius;
+		max-width: 100%;
+		width: 100%;
+		height: 46px;
+		padding: 10px;
+		transition: 0.15s ease;
+		font-size: $fz-base;
+	}
+
+	&__input textarea {
+		height: 120px;
+		resize: vertical;
+	}
+
+	&__input input.error {
+		border: 2px solid $red;
+	}
+
+	&__input textarea:focus,
+	&__input input:focus {
+		border: 2px solid $brand-color;
+	}
+
+	&__error {
+		color: $red;
+		font-size: $fz-xs;
+		margin-top: 4px;
+	}
+}
+
+.add {
+	max-width: 130px;
+	height: 130px;
+	width: 130px;
+	border: 1px solid $gray-medium-color;
+	border-radius: $usual-radius;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: 0.25s ease;
+
+	& path {
+		transition: 0.25s ease;
+	}
+
+	&:hover {
+		background-color: $brand-color;
+	}
+	&:hover path {
+		stroke: #fff;
+	}
+}
+
+.hide {
+	display: none;
+}
+
+.image {
+	&__cards {
+		display: grid;
+		grid-template-columns: repeat(8, 1fr);
+		grid-gap: 10px;
+	}
+
+	&__card {
+		position: relative;
+		max-width: 130px;
+		height: 130px;
+		width: 100%;
+		border-radius: $usual-radius;
+		overflow: hidden;
+		border: 1px solid $gray-medium-color;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	&__remove {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		cursor: pointer;
+		width: 26px;
+		height: 26px;
+		border-radius: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: 0.15s ease;
+
+		&:hover {
+			background-color: $gray-medium-color;
+		}
+	}
+}

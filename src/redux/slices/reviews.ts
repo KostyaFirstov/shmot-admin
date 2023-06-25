@@ -2,13 +2,20 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from '../../axios'
 import { RootState } from '../store'
 import { LoadingProperty } from './auth'
-import { OrderState } from '../../pages/Main'
 import { ReviewState } from '../../pages/Analytics'
 
 export const fetchReviews = createAsyncThunk('auth/fetchReviews', async () => {
 	const { data } = await axios.get<ReviewState[]>(`/api/reviews`)
 	return data
 })
+
+export const fetchRemoveReviews = createAsyncThunk(
+	'auth/fetchRemoveReviews',
+	async (id: number) => {
+		const { data } = await axios.delete<ReviewState[]>(`/api/reviews/${id}`)
+		return data
+	}
+)
 
 interface IReviewsSliceState {
 	reviews: ReviewState[]
@@ -23,7 +30,11 @@ const initialState: IReviewsSliceState = {
 export const reviewslice = createSlice({
 	name: 'reviews',
 	initialState,
-	reducers: {},
+	reducers: {
+		removeReview: (state, action: PayloadAction<number>) => {
+			state.reviews = state.reviews.filter(elem => elem._id !== action.payload)
+		}
+	},
 	extraReducers: builder => {
 		// reviews
 
@@ -48,4 +59,6 @@ export const reviewslice = createSlice({
 export const selectReviews = (state: RootState) => state.reviews
 
 export const ReviewsReducer = reviewslice.reducer
+
+export const { removeReview } = reviewslice.actions
 export default reviewslice.reducer
