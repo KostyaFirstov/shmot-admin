@@ -2,8 +2,13 @@
 
 .form {
 	padding: 24px 0;
+
 	&__title {
-		text-align: center;
+		margin-bottom: 6px;
+
+		h2 {
+			font-size: $fz-desc;
+		}
 	}
 
 	&__wrapper {
@@ -14,9 +19,8 @@
 
 	&__input {
 		width: 100%;
-		margin-bottom: 10px;
+		margin-bottom: 22px;
 		position: relative;
-		display: flex;
 	}
 
 	&__input input,
@@ -50,6 +54,34 @@
 		font-size: $fz-xs;
 		margin-top: 4px;
 	}
+
+	&__button {
+		width: 100%;
+		background-color: $black;
+		color: #fff;
+		padding: 15px;
+		border-radius: $usual-radius;
+		transition: 0.15s ease;
+
+		&:hover {
+			background-color: $brand-color;
+		}
+	}
+
+	&__inputInner {
+		display: flex;
+		grid-gap: 14px;
+	}
+
+	&__checkbox {
+		display: flex;
+		align-items: center;
+		grid-gap: 4px;
+
+		label {
+			cursor: pointer;
+		}
+	}
 }
 
 .add {
@@ -80,29 +112,29 @@
 	display: none;
 }
 
-.image {
-	&__cards {
-		display: grid;
-		grid-template-columns: repeat(8, 1fr);
-		grid-gap: 10px;
-	}
+.cards {
+	display: grid;
+	grid-template-columns: repeat(8, 1fr);
+	grid-gap: 20px;
+}
 
-	&__card {
-		position: relative;
-		max-width: 130px;
-		height: 130px;
+.card {
+	position: relative;
+	width: 100%;
+	max-height: 130px;
+	height: 100%;
+	border-radius: $usual-radius;
+	overflow: hidden;
+	border: 1px solid $gray-medium-color;
+
+	img {
 		width: 100%;
-		border-radius: $usual-radius;
-		overflow: hidden;
-		border: 1px solid $gray-medium-color;
-
-		img {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-		}
+		height: 100%;
+		object-fit: cover;
 	}
+}
 
+.image {
 	&__remove {
 		position: absolute;
 		top: 10px;

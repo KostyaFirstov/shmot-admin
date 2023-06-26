@@ -50,11 +50,10 @@ const Table: React.FC<ITableProps> = ({ headers, products, status }) => {
 						{status === 'loading'
 							? [...new Array(4)].map((item, index) => <Skeleton key={index} />)
 							: products.map((item, index) => {
-									console.log(item.img[0])
 									return (
 										<div key={index} className='table-main__item-outer'>
 											<Link
-												to={`/admin/product/${item.title}`}
+												to={`/admin/product-add/${item.title}/edit`}
 												className='table-main__item'
 											>
 												<div className='table-main__inner table-main__inner-name'>
@@ -73,7 +72,7 @@ const Table: React.FC<ITableProps> = ({ headers, products, status }) => {
 													<span>{item.amount}</span>
 												</div>
 												<div className='table-main__inner'>
-													<span>{item.price}</span>
+													<span>{item.price} ₽</span>
 												</div>
 											</Link>
 											<button

@@ -1,12 +1,18 @@
 import React from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import axios from '../../axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import styles from './Form.module.scss'
+import { useAppDispatch } from '../../redux/store'
+import { fetchCategories, selectFilters } from '../../redux/slices/filters'
+import { useSelector } from 'react-redux'
 
 export type ProductInputs = {
+	_id: number
 	title: string
 	desc: string
+	text: string
+	img?: string[]
 	categories: string[]
 	sizes: string[]
 	color: string
@@ -20,18 +26,83 @@ export type ProductInputs = {
 type ImageUrlType = string[]
 
 const ProductForm = () => {
-	const navigate = useNavigate()
+	const [values, setValues] = React.useState<ProductInputs>()
 	const [imagesUrl, setImagesUrl] = React.useState<ImageUrlType>()
 	const inputFileRef = React.useRef<HTMLInputElement>(null)
+
+	const navigate = useNavigate()
+	const { title } = useParams()
+	const { categories } = useSelector(selectFilters)
+	const appDispatch = useAppDispatch()
+
+	const isEditing = Boolean(title)
 
 	const {
 		register,
 		handleSubmit,
 		setError,
+		setValue,
 		formState: { errors, isValid }
 	} = useForm<ProductInputs>({
-		mode: 'onSubmit'
+		mode: 'onSubmit',
+		defaultValues: {
+			title: values?.title
+		}
 	})
+
+	React.useEffect(() => {
+		const fetchProduct = async () => {
+			try {
+				const { data } = await axios.get(`/api/products/${title}`)
+				setValues(data[0])
+			} catch (error) {
+				console.log(error)
+			}
+		}
+
+		fetchProduct()
+	}, [])
+
+	React.useEffect(() => {
+		const setValues = () => {
+			if (values) {
+				setValue('title', values?.title)
+				setValue('desc', values?.desc)
+				setValue('text', values?.text)
+				setValue('img', values?.img)
+				setValue('popular', values?.popular)
+				setValue('price', values?.price)
+				setValue('amount', values?.amount)
+				setValue('brand', values?.brand)
+				setValue('categories', values?.categories)
+				setValue('color', values?.color)
+				setValue('sizes', values?.sizes)
+				setValue('gender', values?.gender)
+				setImagesUrl(values.img)
+			}
+		}
+
+		setValues()
+	}, [values])
+
+	// React.useEffect(() => {
+	// 	const setImages = async () => {
+	// 		const formData = new FormData()
+	// 		if (values?.img && values?.img.length > 0) {
+	// 			const file = values.img[0]
+	// 			console.log(file)
+	// 			console.log(formData.append('image', file)
+	// 			const { data } = await axios.post('/upload', formData)
+	// 			setImagesUrl(imagesUrl ? [...imagesUrl, data.url] : [data.url])
+	// 		}
+	// 	}
+
+	// 	setImages()
+	// }, [values])
+
+	React.useEffect(() => {
+		appDispatch(fetchCategories())
+	}, [])
 
 	const handleChangeFile = async (
 		event: React.ChangeEvent<HTMLInputElement>
@@ -39,6 +110,7 @@ const ProductForm = () => {
 		try {
 			const formData = new FormData()
 			if (event.target.files) {
+				console.log(event.target.files[0])
 				const file = event.target.files[0]
 				formData.append('image', file)
 				const { data } = await axios.post('/upload', formData)
@@ -59,6 +131,7 @@ const ProductForm = () => {
 		const productData = {
 			title: data.title,
 			desc: data.desc,
+			text: data.text,
 			img: imagesUrl,
 			categories: data.categories,
 			sizes: data.sizes,
@@ -70,15 +143,18 @@ const ProductForm = () => {
 			popular: data.popular
 		}
 
-		await axios.post('/api/products', productData)
+		isEditing
+			? await axios.put(`/api/products/${values?._id}`, productData)
+			: await axios.post('/api/products', productData)
 		navigate(`/admin/products/`)
 	}
-
-	console.log(imagesUrl && imagesUrl)
 
 	return (
 		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
 			<div className={styles.form__input}>
+				<div className={styles.form__title}>
+					<h2>Название</h2>
+				</div>
 				<input
 					className={errors.title && 'error'}
 					type='text'
@@ -92,29 +168,50 @@ const ProductForm = () => {
 				)}
 			</div>
 			<div className={styles.form__input}>
-				<textarea
+				<div className={styles.form__title}>
+					<h2>Описание</h2>
+				</div>
+				<input
 					className={errors.desc && 'error'}
 					placeholder='Этот товар....'
 					{...register('desc', {
 						required: true
 					})}
 				/>
-				{errors.title && (
+				{errors.desc && (
 					<div className={styles.form__error}>Описание указано некорректно</div>
 				)}
 			</div>
 			<div className={styles.form__input}>
+				<div className={styles.form__title}>
+					<h2>Текст</h2>
+				</div>
+				<textarea
+					className={errors.text && 'error'}
+					placeholder='Очень интересный текст....'
+					{...register('text', {
+						required: true
+					})}
+				/>
+				{errors.text && (
+					<div className={styles.form__error}>Текст указан некорректно</div>
+				)}
+			</div>
+			<div className={styles.form__input}>
+				<div className={styles.form__title}>
+					<h2>Изображения</h2>
+				</div>
 				<input
 					className={styles.hide}
 					ref={inputFileRef}
 					type='file'
 					onChange={handleChangeFile}
 				/>
-				<div className={styles.image__cards}>
+				<div className={styles.cards}>
 					{imagesUrl !== undefined &&
 						imagesUrl.map((img, index) => {
 							return (
-								<div className={styles.image__card} key={index}>
+								<div className={styles.card} key={index}>
 									<img src={`http://localhost:5000${img}`} alt='' />
 									<div
 										onClick={() => onClickRemoveImage(index)}
@@ -173,6 +270,9 @@ const ProductForm = () => {
 				</div>
 			</div>
 			<div className={styles.form__input}>
+				<div className={styles.form__title}>
+					<h2>Категории</h2>
+				</div>
 				<input
 					type='text'
 					className={errors.categories && 'error'}
@@ -181,6 +281,13 @@ const ProductForm = () => {
 						required: true
 					})}
 				/>
+				{categories.length > 0 ? (
+					categories.map((category, index) => (
+						<div key={index}>{category.name}</div>
+					))
+				) : (
+					<div>Категорий не найдено</div>
+				)}
 				{errors.categories && (
 					<div className={styles.form__error}>
 						Категории указаны некорректно
@@ -188,10 +295,13 @@ const ProductForm = () => {
 				)}
 			</div>
 			<div className={styles.form__input}>
+				<div className={styles.form__title}>
+					<h2>Размеры</h2>
+				</div>
 				<input
 					type='text'
 					className={errors.sizes && 'error'}
-					placeholder='Размеры'
+					placeholder='39, 41'
 					{...register('sizes', {
 						required: true
 					})}
@@ -201,10 +311,13 @@ const ProductForm = () => {
 				)}
 			</div>
 			<div className={styles.form__input}>
+				<div className={styles.form__title}>
+					<h2>Цвет</h2>
+				</div>
 				<input
 					type='text'
 					className={errors.color && 'error'}
-					placeholder='Цвет'
+					placeholder='Черный..'
 					{...register('color', {
 						required: true
 					})}
@@ -214,6 +327,9 @@ const ProductForm = () => {
 				)}
 			</div>
 			<div className={styles.form__input}>
+				<div className={styles.form__title}>
+					<h2>Бренд</h2>
+				</div>
 				<input
 					type='text'
 					className={errors.brand && 'error'}
@@ -227,10 +343,62 @@ const ProductForm = () => {
 				)}
 			</div>
 			<div className={styles.form__input}>
+				<div className={styles.form__title}>
+					<h2>Пол</h2>
+				</div>
+				<div className={styles.form__inputInner}>
+					<div className={styles.form__checkbox}>
+						<input
+							type='radio'
+							className={errors.gender && 'error'}
+							placeholder='Пол'
+							id='men'
+							value='men'
+							{...register('gender', {
+								required: true
+							})}
+						/>
+						<label htmlFor='men'>Мужской</label>
+					</div>
+					<div className={styles.form__checkbox}>
+						<input
+							type='radio'
+							className={errors.gender && 'error'}
+							placeholder='Пол'
+							id='women'
+							value='women'
+							{...register('gender', {
+								required: true
+							})}
+						/>
+						<label htmlFor='women'>Женский</label>
+					</div>
+					<div className={styles.form__checkbox}>
+						<input
+							type='radio'
+							className={errors.gender && 'error'}
+							placeholder='Пол'
+							id='unisex'
+							value='unisex'
+							{...register('gender', {
+								required: true
+							})}
+						/>
+						<label htmlFor='unisex'>Унисекс</label>
+					</div>
+				</div>
+				{errors.gender && (
+					<div className={styles.form__error}>Пол указан некорректно</div>
+				)}
+			</div>
+			<div className={styles.form__input}>
+				<div className={styles.form__title}>
+					<h2>Цена</h2>
+				</div>
 				<input
 					type='number'
 					className={errors.price && 'error'}
-					placeholder='Цена'
+					placeholder='3000'
 					{...register('price', {
 						required: true
 					})}
@@ -240,23 +408,13 @@ const ProductForm = () => {
 				)}
 			</div>
 			<div className={styles.form__input}>
-				<input
-					type='text'
-					className={errors.gender && 'error'}
-					placeholder='Пол'
-					{...register('gender', {
-						required: true
-					})}
-				/>
-				{errors.gender && (
-					<div className={styles.form__error}>Пол указан некорректно</div>
-				)}
-			</div>
-			<div className={styles.form__input}>
+				<div className={styles.form__title}>
+					<h2>Количество</h2>
+				</div>
 				<input
 					type='number'
 					className={errors.amount && 'error'}
-					placeholder='Количество'
+					placeholder='10..'
 					{...register('amount', {
 						required: true
 					})}
@@ -268,10 +426,13 @@ const ProductForm = () => {
 				)}
 			</div>
 			<div className={styles.form__input}>
+				<div className={styles.form__title}>
+					<h2>Популярность</h2>
+				</div>
 				<input
 					type='number'
 					className={errors.popular && 'error'}
-					placeholder='Популярность 0 - 100'
+					placeholder='0 - 100'
 					{...register('popular', {
 						required: true
 					})}
@@ -282,7 +443,7 @@ const ProductForm = () => {
 					</div>
 				)}
 			</div>
-			<button type='submit' className='form__button button button-black'>
+			<button type='submit' className={styles.form__button}>
 				Добавить товар
 			</button>
 		</form>

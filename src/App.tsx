@@ -36,7 +36,11 @@ function App() {
 					<Route path='/admin/categories' element={<Categories />} />
 					<Route path='/admin/brands' element={<Brands />} />
 					<Route path='/admin/product/:title' element={<ProductPage />} />
-					<Route path='/admin/product-add' element={<CreateProduct />} />
+					<Route path='/admin/product-add/' element={<CreateProduct />} />
+					<Route
+						path='/admin/product-add/:title/edit'
+						element={<CreateProduct />}
+					/>
 				</Route>
 			</Routes>
 		</div>
