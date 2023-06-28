@@ -44,10 +44,7 @@ const ProductForm = () => {
 		setValue,
 		formState: { errors, isValid }
 	} = useForm<ProductInputs>({
-		mode: 'onSubmit',
-		defaultValues: {
-			title: values?.title
-		}
+		mode: 'onSubmit'
 	})
 
 	React.useEffect(() => {
