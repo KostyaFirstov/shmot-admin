@@ -40,8 +40,12 @@ const Table: React.FC<ITableProps> = ({ headers, reviews, status }) => {
 					<div className='table-header__list'>
 						{status === 'loading'
 							? [...new Array(4)].map((item, index) => <Skeleton key={index} />)
-							: headers.map(title => {
-									return <div className='table-header__item'>{title}</div>
+							: headers.map((title, index) => {
+									return (
+										<div key={index} className='table-header__item'>
+											{title}
+										</div>
+									)
 							  })}
 					</div>
 					<div className='table-main__list'>
@@ -50,7 +54,7 @@ const Table: React.FC<ITableProps> = ({ headers, reviews, status }) => {
 							: reviews.map((item, index) => (
 									<div key={index} className='table-main__item-outer'>
 										<Link
-											to={`/admin/reviews/${item.title}`}
+											to={`/admin/review-add/${item.title}/edit`}
 											className='table-main__item'
 										>
 											<div className='table-main__inner'>

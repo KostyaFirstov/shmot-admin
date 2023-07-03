@@ -40,7 +40,7 @@ const Logo = () => {
 							height='16'
 							rx='5'
 							fill='#23CFC9'
-							fill-opacity='0.86'
+							fillOpacity='0.86'
 						/>
 					</g>
 					<path
@@ -55,9 +55,9 @@ const Logo = () => {
 							width='67'
 							height='18'
 							filterUnits='userSpaceOnUse'
-							color-interpolation-filters='sRGB'
+							colorInterpolationFilters='sRGB'
 						>
-							<feFlood flood-opacity='0' result='BackgroundImageFix' />
+							<feFlood floodOpacity='0' result='BackgroundImageFix' />
 							<feBlend
 								mode='normal'
 								in='SourceGraphic'

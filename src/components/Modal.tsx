@@ -31,9 +31,9 @@ const Modal: React.FC<IModalProps> = ({
 						<path
 							d='M1.83883 1.16117L19.5165 18.8388M1.83883 18.8388L19.5165 1.16117'
 							stroke='#23CFC9'
-							stroke-width='2'
-							stroke-linecap='round'
-							stroke-linejoin='round'
+							strokeWidth='2'
+							strokeLinecap='round'
+							strokeLinejoin='round'
 						/>
 					</svg>
 				</div>

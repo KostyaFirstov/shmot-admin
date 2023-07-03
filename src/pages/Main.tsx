@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import LineChart from '../components/LineChart'
 import ContentLayout from '../layouts/ContentLayout'
-import StatisticCard from '../components/StatisticCard'
 import axios from '../axios'
 import TimeAgo from 'react-timeago'
 import AreaChart from '../components/AreaChart'
@@ -25,7 +24,7 @@ export type OrderState = {
 	_id: number
 	userName: string
 	userId: string
-	products: []
+	products: { productId: string; quantity: number }[]
 	price: number
 	address: string
 	status: string
@@ -219,7 +218,6 @@ const Main = () => {
 		const getStats = async () => {
 			try {
 				const { data } = await axios.get<StatsReq[]>('/api/users/stats')
-				console.log(data)
 
 				data.map(item =>
 					setUserStats(prev => [

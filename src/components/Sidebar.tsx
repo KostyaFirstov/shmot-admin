@@ -6,17 +6,17 @@ import ThemeSwitcher from './ThemeSwitcher'
 const Sidebar = () => {
 	const statisticLinks = [
 		{ name: 'Главная', url: '/admin' },
-		{ name: 'Аналитика', url: '/admin/analytics' },
-		{ name: 'Скидки', url: '/admin/sales' }
+		{ name: 'Аналитика', url: '/admin/analytics/' },
+		{ name: 'Скидки', url: '/admin/sales/' }
 	]
 	const managementLinks = [
-		{ name: 'Пользователи', url: '/admin/users' },
-		{ name: 'Продукты', url: '/admin/products' },
-		{ name: 'Заказы', url: '/admin/orders' },
-		{ name: 'Обзоры', url: '/admin/reviews' },
-		{ name: 'Дропы', url: '/admin/drops' },
-		{ name: 'Категории', url: '/admin/categories' },
-		{ name: 'Бренды', url: '/admin/brands' }
+		{ name: 'Пользователи', url: '/admin/users/' },
+		{ name: 'Продукты', url: '/admin/products/' },
+		{ name: 'Заказы', url: '/admin/orders/' },
+		{ name: 'Обзоры', url: '/admin/reviews/' },
+		{ name: 'Дропы', url: '/admin/drops/' },
+		{ name: 'Категории', url: '/admin/categories/' },
+		{ name: 'Бренды', url: '/admin/brands/' }
 	]
 	const feedbackLinks = [
 		{ name: 'Сообщения', url: '/messages' },

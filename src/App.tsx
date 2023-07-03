@@ -16,6 +16,9 @@ import ProductPage from './pages/ProductPage'
 import CreateProduct from './pages/CreateProduct'
 import Categories from './pages/Categories'
 import Brands from './pages/Brands'
+import OrderPage from './pages/OrderPage'
+import CreateReview from './pages/CreateReview'
+import CreateUser from './pages/CreateUser'
 
 function App() {
 	const theme = useSelector(selectThemeValue)
@@ -36,11 +39,19 @@ function App() {
 					<Route path='/admin/categories' element={<Categories />} />
 					<Route path='/admin/brands' element={<Brands />} />
 					<Route path='/admin/product/:title' element={<ProductPage />} />
+					<Route path='/admin/orders/:id' element={<OrderPage />} />
 					<Route path='/admin/product-add/' element={<CreateProduct />} />
 					<Route
 						path='/admin/product-add/:title/edit'
 						element={<CreateProduct />}
 					/>
+					<Route path='/admin/review-add/' element={<CreateReview />} />
+					<Route
+						path='/admin/review-add/:title/edit'
+						element={<CreateReview />}
+					/>
+					<Route path='/admin/user-add/' element={<CreateUser />} />
+					<Route path='/admin/user-add/:id/edit' element={<CreateUser />} />
 				</Route>
 			</Routes>
 		</div>

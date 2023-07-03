@@ -1,8 +1,10 @@
 .root {
 	width: 100%;
 
-	path,
+	svg,
 	rect {
 		width: 100%;
+		max-width: 100%;
+		min-width: 100%;
 	}
 }
