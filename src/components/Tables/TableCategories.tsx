@@ -22,7 +22,7 @@ const Table: React.FC<ITableProps> = ({ headers, categories, status }) => {
 	const appDispatch = useAppDispatch()
 
 	const handleRemove = (id: number) => {
-		if (window.confirm('Вы точно хотите удалить бренд?')) {
+		if (window.confirm('Вы точно хотите удалить категорию?')) {
 			dispatch(removeCategory(id))
 			appDispatch(fetchRemoveCategory(id))
 		}
@@ -56,7 +56,7 @@ const Table: React.FC<ITableProps> = ({ headers, categories, status }) => {
 							: categories.map((item, index) => (
 									<div key={index} className='table-main__item-outer'>
 										<Link
-											to={`/admin/reviews/${item.link}`}
+											to={`/admin/category-add/${item.name}/edit`}
 											className='table-main__item'
 										>
 											<div className='table-main__inner'>

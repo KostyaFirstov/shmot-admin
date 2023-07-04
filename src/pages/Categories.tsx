@@ -60,12 +60,12 @@ const Drops = () => {
 			name: 'Добавить категорию',
 			param: '',
 			growth: null,
-			link: '/admin/brand/add'
+			link: '/admin/category-add'
 		}
 	]
 
 	return (
-		<ContentLayout title='Предстоящие дропы'>
+		<ContentLayout title='Категории'>
 			<StatisticBlock cards={categoriesCards} status={status} />
 			<TableCategories
 				headers={['Название', 'Ссылка']}

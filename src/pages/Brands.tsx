@@ -60,7 +60,7 @@ const Drops = () => {
 			name: 'Добавить бренд',
 			param: '',
 			growth: null,
-			link: '/admin/brand/add'
+			link: '/admin/brand-add'
 		}
 	]
 

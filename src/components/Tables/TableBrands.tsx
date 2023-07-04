@@ -56,7 +56,7 @@ const Table: React.FC<ITableProps> = ({ headers, brands, status }) => {
 							: brands.map((item, index) => (
 									<div key={index} className='table-main__item-outer'>
 										<Link
-											to={`/admin/reviews/${item.link}`}
+											to={`/admin/brand-add/${item.link}/edit`}
 											className='table-main__item'
 										>
 											<div className='table-main__inner'>

@@ -17,7 +17,7 @@ export const fetchCategories = createAsyncThunk(
 )
 
 export const fetchRemoveBrand = createAsyncThunk(
-	'auth/fetchCategories',
+	'auth/fetchRemoveBrand',
 	async (id: number) => {
 		const { data } = await axios.delete<FiltersParams[]>(`/api/brands/${id}`)
 		return data
@@ -25,7 +25,7 @@ export const fetchRemoveBrand = createAsyncThunk(
 )
 
 export const fetchRemoveCategory = createAsyncThunk(
-	'auth/fetchCategories',
+	'auth/fetchRemoveCategory',
 	async (id: number) => {
 		const { data } = await axios.delete<FiltersParams[]>(
 			`/api/categories/${id}`

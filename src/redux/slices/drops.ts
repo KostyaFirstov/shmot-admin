@@ -16,6 +16,7 @@ export type DropParams = {
 	img: string[]
 	date: string
 	viewsCount: number
+	createdAt: string
 }
 
 interface IDropsSliceState {

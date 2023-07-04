@@ -4,19 +4,19 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import styles from './Form.module.scss'
 
-export type ReviewInputs = {
+export type DropInputs = {
 	_id: number
 	title: string
 	desc: string
 	text: string
+	date: string
 	img: string[]
-	tags: string[]
 }
 
 type ImageUrlType = string[]
 
-const ReviewForm = () => {
-	const [values, setValues] = React.useState<ReviewInputs>()
+const DropForm = () => {
+	const [values, setValues] = React.useState<DropInputs>()
 	const [imagesUrl, setImagesUrl] = React.useState<ImageUrlType>()
 	const inputFileRef = React.useRef<HTMLInputElement>(null)
 
@@ -30,14 +30,14 @@ const ReviewForm = () => {
 		setError,
 		setValue,
 		formState: { errors, isValid }
-	} = useForm<ReviewInputs>({
+	} = useForm<DropInputs>({
 		mode: 'onSubmit'
 	})
 
 	React.useEffect(() => {
 		const fetchProduct = async () => {
 			try {
-				const { data } = await axios.get(`/api/reviews/${title}`)
+				const { data } = await axios.get(`/api/drops/${title}`)
 				setValues(data)
 			} catch (error) {
 				console.log(error)
@@ -54,7 +54,7 @@ const ReviewForm = () => {
 				setValue('desc', values?.desc)
 				setValue('text', values?.text)
 				setValue('img', values?.img)
-				setValue('tags', values?.tags)
+				setValue('date', values?.date)
 				setImagesUrl(values.img)
 			}
 		}
@@ -85,19 +85,19 @@ const ReviewForm = () => {
 		setImagesUrl(filtedImages)
 	}
 
-	const onSubmit: SubmitHandler<ReviewInputs> = async data => {
+	const onSubmit: SubmitHandler<DropInputs> = async data => {
 		const productData = {
 			title: data.title,
 			desc: data.desc,
 			text: data.text,
 			img: imagesUrl,
-			tags: data.tags
+			date: data.date
 		}
 
 		isEditing
-			? await axios.put(`/api/reviews/${values?._id}`, productData)
-			: await axios.post('/api/reviews', productData)
-		navigate(`/admin/reviews/`)
+			? await axios.put(`/api/drops/${values?._id}`, productData)
+			: await axios.post('/api/drops', productData)
+		navigate(`/admin/drops/`)
 	}
 
 	return (
@@ -225,25 +225,27 @@ const ReviewForm = () => {
 			</div>
 			<div className={styles.form__input}>
 				<div className={styles.form__title}>
-					<h2>Теги</h2>
+					<h2>Дата дропа</h2>
 				</div>
 				<input
-					className={errors.tags && 'error'}
+					className={errors.date && 'error'}
 					type='text'
-					placeholder='Nike..'
-					{...register('tags', {
+					placeholder='02/12/2024'
+					{...register('date', {
 						required: true
 					})}
 				/>
-				{errors.tags && (
-					<div className={styles.form__error}>Текст указано некорректно</div>
+				{errors.date && (
+					<div className={styles.form__error}>
+						Дата дропа указана некорректно
+					</div>
 				)}
 			</div>
 			<button type='submit' className={styles.form__button}>
-				{isEditing ? 'Изменить обзор' : 'Добавить обзор'}
+				{isEditing ? 'Изменить дроп' : 'Добавить дроп'}
 			</button>
 		</form>
 	)
 }
 
-export default ReviewForm
+export default DropForm

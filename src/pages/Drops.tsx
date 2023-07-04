@@ -60,7 +60,7 @@ const Drops = () => {
 			name: 'Добавить дроп',
 			param: '',
 			growth: null,
-			link: '/admin/drop/add'
+			link: '/admin/drop-add'
 		}
 	]
 
