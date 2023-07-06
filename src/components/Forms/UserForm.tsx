@@ -3,8 +3,11 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import styles from './Form.module.scss'
 import axios from '../../axios'
+import { fetchAuthUpdate, selectAccount } from '../../redux/slices/auth'
+import { useSelector } from 'react-redux'
+import { useAppDispatch } from '../../redux/store'
 
-type UserInputs = {
+export type UserInputs = {
 	_id: number
 	username: string
 	email: string
@@ -19,6 +22,9 @@ const UserForm = () => {
 	const [values, setValues] = React.useState<UserInputs>()
 	const [imagesUrl, setImagesUrl] = React.useState('')
 	const inputFileRef = React.useRef<HTMLInputElement>(null)
+
+	const account = useSelector(selectAccount)
+	const appDispatch = useAppDispatch()
 
 	const navigate = useNavigate()
 	const { id } = useParams()
@@ -59,7 +65,6 @@ const UserForm = () => {
 		try {
 			const formData = new FormData()
 			if (event.target.files) {
-				console.log(event.target.files[0])
 				const file = event.target.files[0]
 				formData.append('image', file)
 				const { data } = await axios.post('/upload', formData)
@@ -85,9 +90,14 @@ const UserForm = () => {
 			orders: data.orders
 		}
 
-		isEditing
-			? await axios.put(`/api/users/${values?._id}`, userData)
-			: await axios.post('/api/auth/register', userData)
+		if (account?._id === values?._id) {
+			appDispatch(fetchAuthUpdate({ id: values?._id, data: userData }))
+		} else if (isEditing) {
+			await axios.put(`/api/users/${values?._id}`, userData)
+		} else {
+			await axios.post('/api/auth/register', userData)
+		}
+
 		navigate(`/admin/users/`)
 	}
 

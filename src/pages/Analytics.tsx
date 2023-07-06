@@ -7,13 +7,7 @@ import TimeAgo from 'react-timeago'
 import axios from '../axios'
 import { LoadingProperty } from '../redux/slices/auth'
 import NotFound from '../components/NotFound'
-
-export type RequestsState = {
-	_id: number
-	text: string
-	popular: number
-	isApproved: boolean
-}
+import { RequestState } from '../redux/slices/requests'
 
 export type ReviewState = {
 	_id: number
@@ -24,7 +18,7 @@ export type ReviewState = {
 }
 
 const Analytics = () => {
-	const [requests, setRequests] = React.useState<RequestsState[]>()
+	const [requests, setRequests] = React.useState<RequestState[]>()
 	const [reviews, setReviews] = React.useState<ReviewState[]>()
 	const [isMounted, setIsMounted] = React.useState(
 		LoadingProperty.STATUS_LOADING
@@ -33,7 +27,7 @@ const Analytics = () => {
 	React.useEffect(() => {
 		const getRequests = async () => {
 			try {
-				const { data } = await axios.get<RequestsState[]>(
+				const { data } = await axios.get<RequestState[]>(
 					'/api/requests?all=true'
 				)
 				setRequests(data)
@@ -63,7 +57,7 @@ const Analytics = () => {
 	}, [])
 
 	return (
-		<ContentLayout title='Подробная аналитика по сайту.'>
+		<ContentLayout title='Подробная аналитика по сайту'>
 			<div className='statistic'>
 				{isMounted !== 'error' ? (
 					<div className='statistic__info-chart'>

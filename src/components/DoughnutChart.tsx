@@ -1,12 +1,12 @@
 import React from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Doughnut } from 'react-chartjs-2'
-import { RequestsState } from '../pages/Analytics'
+import { RequestState } from '../redux/slices/requests'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
 interface IDoughnutChartProps {
-	stats: RequestsState[]
+	stats: RequestState[]
 }
 
 const DoughnutChart: React.FC<IDoughnutChartProps> = ({ stats }) => {

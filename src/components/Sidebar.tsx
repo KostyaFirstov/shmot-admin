@@ -1,13 +1,17 @@
 import React from 'react'
 import Logo from './Logo'
 import SidebarColumn from './SidebarColumn'
-import ThemeSwitcher from './ThemeSwitcher'
+import { selectAccount } from '../redux/slices/auth'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const Sidebar = () => {
+	const account = useSelector(selectAccount)
+
 	const statisticLinks = [
 		{ name: 'Главная', url: '/admin' },
-		{ name: 'Аналитика', url: '/admin/analytics/' },
-		{ name: 'Скидки', url: '/admin/sales/' }
+		{ name: 'Аналитика', url: '/admin/analytics/' }
+		// { name: 'Скидки', url: '/admin/sales/' }
 	]
 	const managementLinks = [
 		{ name: 'Пользователи', url: '/admin/users/' },
@@ -16,12 +20,13 @@ const Sidebar = () => {
 		{ name: 'Обзоры', url: '/admin/reviews/' },
 		{ name: 'Дропы', url: '/admin/drops/' },
 		{ name: 'Категории', url: '/admin/categories/' },
-		{ name: 'Бренды', url: '/admin/brands/' }
+		{ name: 'Бренды', url: '/admin/brands/' },
+		{ name: 'Запросы', url: '/admin/requests/' }
 	]
-	const feedbackLinks = [
-		{ name: 'Сообщения', url: '/messages' },
-		{ name: 'Администрирование', url: '/admin/email' }
-	]
+	// const feedbackLinks = [
+	// 	{ name: 'Сообщения', url: '/messages' },
+	// 	{ name: 'Администрирование', url: '/admin/email' }
+	// ]
 
 	return (
 		<div className='sidebar'>
@@ -29,25 +34,24 @@ const Sidebar = () => {
 			<div className='sidebar__columns'>
 				<SidebarColumn title='Статистика' links={statisticLinks} />
 				<SidebarColumn title='Управление' links={managementLinks} />
-				<SidebarColumn title='Обратная связь' links={feedbackLinks} />
 			</div>
 			<div className='sidebar__options'>
-				<div className='sidebar__option sidebar__option-theme'>
-					<ThemeSwitcher />
-				</div>
-				<div className='sidebar__option sidebar__option-account'>
-					<div className='account__avatar'>
-						<img src='/img/Oval.jpg' alt='' />
+				<Link
+					to='/admin/account'
+					className='sidebar__option sidebar__option-account'
+				>
+					<div className='option-account__avatar'>
+						<img src={`http://localhost:5000${account?.avatar}`} alt='' />
 					</div>
-					<div className='account__info'>
-						<div className='account__name'>
-							<span>Frankie Sullivan</span>
+					<div className='option-account__info'>
+						<div className='option-account__name'>
+							<span>{account?.username}</span>
 						</div>
-						<div className='account__code'>
-							<span>@frankie</span>
+						<div className='option-account__code'>
+							<span>{account?.email}</span>
 						</div>
 					</div>
-				</div>
+				</Link>
 			</div>
 		</div>
 	)
