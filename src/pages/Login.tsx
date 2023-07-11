@@ -5,7 +5,7 @@ const Login = () => {
 	return (
 		<div className='login'>
 			<div className='login__leftside'>
-				<h1>Войти в админ панель</h1>
+				<h1>Войти в админ-панель</h1>
 				<LoginForm />
 			</div>
 			<div className='login__rightside'>

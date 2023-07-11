@@ -1,12 +1,14 @@
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import styles from './Form.module.scss'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useAppDispatch } from '../../redux/store'
 import {
 	fetchAuth,
+	selectAccount,
 	selectErrorAuth,
+	selectIsAdmin,
 	selectIsAuth
 } from '../../redux/slices/auth'
 
@@ -17,10 +19,11 @@ type LoginInputs = {
 }
 
 const LoginForm = () => {
-	const navigate = useNavigate()
 	const appDispatch = useAppDispatch()
 	const isAuth = useSelector(selectIsAuth)
+	const isAdmin = useSelector(selectIsAdmin)
 	const errorAuth = useSelector(selectErrorAuth)
+	const account = useSelector(selectAccount)
 
 	const {
 		register,
@@ -32,8 +35,8 @@ const LoginForm = () => {
 		mode: 'onSubmit'
 	})
 
-	if (isAuth) {
-		navigate(`/admin/`)
+	if (isAuth && isAdmin) {
+		return <Navigate to='/admin/' />
 	}
 
 	const onSubmit: SubmitHandler<LoginInputs> = async data => {
@@ -72,6 +75,9 @@ const LoginForm = () => {
 				{errors.password && <div className='form__error'>Не указан пароль</div>}
 			</div>
 			{errorAuth && <div className='error form__error-main'>{errorAuth}</div>}
+			{isAdmin !== undefined && !isAdmin && (
+				<div className='error form__error-main'>Доступ запрещён!</div>
+			)}
 			<button type='submit' className={styles.form__button}>
 				Войти
 			</button>

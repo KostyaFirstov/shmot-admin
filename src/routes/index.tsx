@@ -21,6 +21,7 @@ import CreateRequest from '../pages/CreateRequest'
 import Login from '../pages/Login'
 import Account from '../pages/Account'
 import UpdateOrder from '../pages/UdateOrder'
+import NotFound from '../components/NotFound'
 
 export const routes = [
 	{ link: '/admin', element: <Main /> },
@@ -51,5 +52,14 @@ export const routes = [
 	{ link: '/admin/brand-add/:title/edit', element: <CreateBrand /> },
 	{ link: '/admin/request-add/', element: <CreateRequest /> },
 	{ link: '/admin/request-add/:id/edit', element: <CreateRequest /> },
-	{ link: '/admin/orders/:id/edit', element: <UpdateOrder /> }
+	{ link: '/admin/orders/:id/edit', element: <UpdateOrder /> },
+	{
+		link: '/admin/*',
+		element: (
+			<NotFound
+				title='Хм... пусто!'
+				desc='По такому запросу ничего не найдено'
+			/>
+		)
+	}
 ]

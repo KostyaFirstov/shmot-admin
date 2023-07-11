@@ -215,34 +215,34 @@ const Main = () => {
 		getIncomeStats()
 	}, [])
 
-	// React.useEffect(() => {
-	// 	const getStats = async () => {
-	// 		try {
-	// 			const { data } = await axios.get<StatsReq[]>('/api/users/stats')
+	React.useEffect(() => {
+		const getStats = async () => {
+			try {
+				const { data } = await axios.get<StatsReq[]>('/api/users/stats')
 
-	// 			data.map(item =>
-	// 				setUserStats(prev => [
-	// 					...prev,
-	// 					{ month: MONTHS[item._id - 1], value: item.total }
-	// 				])
-	// 			)
+				data.map(item =>
+					setUserStats(prev => [
+						...prev,
+						{ month: MONTHS[item._id - 1], value: item.total }
+					])
+				)
 
-	// 			const newPerc = {
-	// 				...percUser,
-	// 				error:
-	// 					(+data[data.length - 1].total * 100) / +data[data.length - 2].total,
-	// 				param: data[data.length - 1].total
-	// 			}
+				const newPerc = {
+					...percUser,
+					error:
+						(+data[data.length - 1].total * 100) / +data[data.length - 2].total,
+					param: data[data.length - 1].total
+				}
 
-	// 			setPercUser(newPerc)
-	// 			setIsMounted(LoadingProperty.STATUS_LOADED)
-	// 		} catch (error) {
-	// 			console.log(error)
-	// 			setIsMounted(LoadingProperty.STATUS_ERROR)
-	// 		}
-	// 	}
-	// 	getStats()
-	// }, [MONTHS])
+				setPercUser(newPerc)
+				setIsMounted(LoadingProperty.STATUS_LOADED)
+			} catch (error) {
+				console.log(error)
+				setIsMounted(LoadingProperty.STATUS_ERROR)
+			}
+		}
+		getStats()
+	}, [MONTHS])
 
 	React.useEffect(() => {
 		const getUsers = async () => {

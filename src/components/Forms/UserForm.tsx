@@ -3,8 +3,12 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import styles from './Form.module.scss'
 import axios from '../../axios'
-import { fetchAuthUpdate, selectAccount } from '../../redux/slices/auth'
-import { useSelector } from 'react-redux'
+import {
+	fetchAuthUpdate,
+	selectAccount,
+	updateAdmin
+} from '../../redux/slices/auth'
+import { useDispatch, useSelector } from 'react-redux'
 import { useAppDispatch } from '../../redux/store'
 
 export type UserInputs = {
@@ -25,6 +29,7 @@ const UserForm = () => {
 
 	const account = useSelector(selectAccount)
 	const appDispatch = useAppDispatch()
+	const dispatch = useDispatch()
 
 	const navigate = useNavigate()
 	const { id } = useParams()
@@ -92,6 +97,17 @@ const UserForm = () => {
 
 		if (account?._id === values?._id) {
 			appDispatch(fetchAuthUpdate({ id: values?._id, data: userData }))
+			dispatch(
+				updateAdmin({
+					...account,
+					avatar: userData.avatar,
+					username: userData.username,
+					email: userData.email,
+					password: userData.password,
+					isAdmim: userData.isAdmin,
+					orders: userData.orders
+				})
+			)
 		} else if (isEditing) {
 			await axios.put(`/api/users/${values?._id}`, userData)
 		} else {

@@ -672,10 +672,8 @@ body {
 	// .account__image
 
 	&__image {
-		max-width: 140px;
-		max-height: 140px;
-		width: 100%;
-		height: 100%;
+		width: 140px;
+		height: 140px;
 		object-fit: cover;
 		border-radius: 100%;
 		border: 1px solid $brand-color;
@@ -698,5 +696,13 @@ body {
 		position: absolute;
 		top: 10px;
 		right: 10px;
+	}
+
+	&__logout {
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
+		font-size: $fz-base;
+		font-weight: 500;
 	}
 }

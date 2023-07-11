@@ -1,12 +1,17 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { selectAccount } from '../redux/slices/auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout, selectAccount } from '../redux/slices/auth'
 import ContentLayout from '../layouts/ContentLayout'
 import TimeAgo from 'react-timeago'
 import { Link } from 'react-router-dom'
 
 const Account = () => {
 	const account = useSelector(selectAccount)
+	const dispatch = useDispatch()
+
+	const handleLogout = () => {
+		dispatch(logout())
+	}
 
 	return (
 		<ContentLayout title='Мой аккаунт'>
@@ -16,7 +21,7 @@ const Account = () => {
 						<img
 							className='account__image'
 							src={`http://localhost:5000${account?.avatar}`}
-							alt={account?.username}
+							alt={'avatar'}
 						/>
 						<div className='account__name'>
 							<h2>{account?.username}</h2>
@@ -24,7 +29,7 @@ const Account = () => {
 					</div>
 					<div className='account__details'>
 						<div>
-							Дата регистрации:
+							Дата регистрации:{' '}
 							<TimeAgo date={account ? account.createdAt : ''} />
 						</div>
 						<div>Email: {account?.email}</div>
@@ -35,6 +40,9 @@ const Account = () => {
 					>
 						Изменить
 					</Link>
+					<button className='account__logout' onClick={handleLogout}>
+						Выйти
+					</button>
 				</div>
 			</div>
 		</ContentLayout>
