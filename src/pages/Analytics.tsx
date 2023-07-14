@@ -12,6 +12,7 @@ import { RequestState } from '../redux/slices/requests'
 export type ReviewState = {
 	_id: number
 	title: number
+	desc: string
 	tags: string[]
 	viewsCount: number
 	createdAt: number

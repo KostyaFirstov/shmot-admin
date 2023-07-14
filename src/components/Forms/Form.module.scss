@@ -21,6 +21,14 @@
 		width: 100%;
 		margin-bottom: 22px;
 		position: relative;
+
+		&_btns {
+			display: flex;
+		}
+
+		&_btn {
+			background-color: $brand-color;
+		}
 	}
 
 	&__input input,
@@ -152,4 +160,38 @@
 			background-color: $gray-medium-color;
 		}
 	}
+}
+
+.category {
+	&__btns {
+		display: flex;
+		margin-top: 6px;
+		gap: 6px;
+	}
+
+	&__btn {
+		position: relative;
+		background-color: $gray-medium-color;
+		border-radius: $usual-radius;
+		padding: 6px 20px 6px 12px;
+		font-weight: 500;
+		font-size: $fz-sm;
+		cursor: pointer;
+
+		&::after {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-55%);
+			right: 6px;
+			font-size: $fz-xs;
+		}
+	}
+}
+
+.active {
+	background-color: $brand-color;
+}
+
+.active::after {
+	content: 'x';
 }

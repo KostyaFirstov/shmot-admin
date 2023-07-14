@@ -10,7 +10,7 @@ export type ReviewInputs = {
 	desc: string
 	text: string
 	img: string[]
-	tags: string[]
+	tags: string
 }
 
 type ImageUrlType = string[]
@@ -68,7 +68,6 @@ const ReviewForm = () => {
 		try {
 			const formData = new FormData()
 			if (event.target.files) {
-				console.log(event.target.files[0])
 				const file = event.target.files[0]
 				formData.append('image', file)
 				const { data } = await axios.post('/upload', formData)
@@ -86,17 +85,17 @@ const ReviewForm = () => {
 	}
 
 	const onSubmit: SubmitHandler<ReviewInputs> = async data => {
-		const productData = {
+		const reviewData = {
 			title: data.title,
 			desc: data.desc,
 			text: data.text,
 			img: imagesUrl,
-			tags: data.tags
+			tags: data.tags.split(',')
 		}
 
 		isEditing
-			? await axios.put(`/api/reviews/${values?._id}`, productData)
-			: await axios.post('/api/reviews', productData)
+			? await axios.put(`/api/reviews/${values?._id}`, reviewData)
+			: await axios.post('/api/reviews', reviewData)
 		navigate(`/admin/reviews/`)
 	}
 

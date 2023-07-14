@@ -4,7 +4,12 @@ import axios from '../../axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import styles from './Form.module.scss'
 import { useAppDispatch } from '../../redux/store'
-import { fetchCategories, selectFilters } from '../../redux/slices/filters'
+import {
+	FiltersParams,
+	fetchBrands,
+	fetchCategories,
+	selectFilters
+} from '../../redux/slices/filters'
 import { useSelector } from 'react-redux'
 
 export type ProductInputs = {
@@ -13,10 +18,10 @@ export type ProductInputs = {
 	desc: string
 	text: string
 	img?: string[]
-	categories: string[]
+	categories: FiltersParams[]
 	sizes: string
 	color: string
-	brand: string
+	brand: FiltersParams
 	price: number
 	gender: string
 	amount: number
@@ -27,6 +32,10 @@ type ImageUrlType = string[]
 
 const ProductForm = () => {
 	const [values, setValues] = React.useState<ProductInputs>()
+	const [categoriesInput, setCategoriesInput] = React.useState<FiltersParams[]>(
+		[]
+	)
+	const [brandsInput, setBrandsInput] = React.useState<FiltersParams>()
 	const [imagesUrl, setImagesUrl] = React.useState<ImageUrlType>()
 	const inputFileRef = React.useRef<HTMLInputElement>(null)
 
@@ -34,7 +43,7 @@ const ProductForm = () => {
 	const { title } = useParams()
 
 	const appDispatch = useAppDispatch()
-	const { categories } = useSelector(selectFilters)
+	const { categories, brands } = useSelector(selectFilters)
 	const isEditing = Boolean(title)
 
 	const {
@@ -70,14 +79,15 @@ const ProductForm = () => {
 				setValue('popular', values?.popular)
 				setValue('price', values?.price)
 				setValue('amount', values?.amount)
-				setValue('brand', values?.brand)
-				setValue('categories', values?.categories)
 				setValue('color', values?.color)
 				setValue('sizes', values?.sizes)
 				setValue(
 					'gender',
 					values?.gender.length < 2 ? values.gender[0] : 'men,women'
 				)
+
+				setBrandsInput(values?.brand)
+				setCategoriesInput(values?.categories)
 				setImagesUrl(values.img)
 			}
 		}
@@ -87,6 +97,7 @@ const ProductForm = () => {
 
 	React.useEffect(() => {
 		appDispatch(fetchCategories())
+		appDispatch(fetchBrands())
 	}, [])
 
 	const handleChangeFile = async (
@@ -119,10 +130,10 @@ const ProductForm = () => {
 			desc: data.desc,
 			text: data.text,
 			img: imagesUrl,
-			categories: data.categories,
+			categories: categoriesInput,
 			sizes: sizes,
 			color: data.color,
-			brand: data.brand,
+			brand: brandsInput,
 			price: data.price,
 			gender: data.gender.split(','),
 			amount: data.amount,
@@ -134,6 +145,25 @@ const ProductForm = () => {
 			: await axios.post('/api/products', productData)
 		navigate(`/admin/products/`)
 	}
+
+	const handleClickCategory = (i: number, id: number) => {
+		const isCategoryAdded = categoriesInput.some((val, index) => val._id === id)
+
+		if (isCategoryAdded) {
+			const filtredCategories = categoriesInput.filter(
+				(val, index) => val._id !== id
+			)
+			setCategoriesInput(filtredCategories)
+		} else {
+			setCategoriesInput(prev => [...prev, categories[i]])
+		}
+	}
+
+	const handleClickBrand = (i: number) => {
+		setBrandsInput(brands[i])
+	}
+
+	const filtredCategories = categoriesInput.map(item => item.name).join(', ')
 
 	return (
 		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -261,14 +291,32 @@ const ProductForm = () => {
 				</div>
 				<input
 					type='text'
+					value={filtredCategories}
 					className={errors.categories && 'error'}
 					placeholder='Категории'
+					disabled
 					{...register('categories')}
 				/>
 				{categories.length > 0 ? (
-					categories.map((category, index) => (
-						<div key={index}>{category.name}</div>
-					))
+					<div className={styles.category__btns}>
+						{categories.map((category, index) => {
+							return (
+								<div
+									className={`${styles.category__btn} ${
+										categoriesInput
+											.map(item => item.name === category.name)
+											.find(val => val === true)
+											? `${styles.active}`
+											: ''
+									}`}
+									onClick={() => handleClickCategory(index, category._id)}
+									key={index}
+								>
+									{category.name}
+								</div>
+							)
+						})}
+					</div>
 				) : (
 					<div>Категорий не найдено</div>
 				)}
@@ -318,10 +366,29 @@ const ProductForm = () => {
 					type='text'
 					className={errors.brand && 'error'}
 					placeholder='Бренд'
-					{...register('brand', {
-						required: true
-					})}
+					value={brandsInput?.name || ''}
+					disabled
+					{...register('brand')}
 				/>
+				{brands.length > 0 ? (
+					<div className={styles.category__btns}>
+						{brands.map((brand, index) => {
+							return (
+								<div
+									className={`${styles.category__btn} ${
+										brandsInput?.name === brand.name ? `${styles.active}` : ''
+									}`}
+									onClick={() => handleClickBrand(index)}
+									key={index}
+								>
+									{brand.name}
+								</div>
+							)
+						})}
+					</div>
+				) : (
+					<div>Брендов не найдено</div>
+				)}
 				{errors.brand && (
 					<div className={styles.form__error}>Бренд указан некорректно</div>
 				)}

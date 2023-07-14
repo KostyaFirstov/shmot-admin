@@ -61,7 +61,7 @@ const Table: React.FC<ITableProps> = ({ headers, reviews, status }) => {
 												<h3>{item.title}</h3>
 											</div>
 											<div className='table-main__inner'>
-												<span>{item.tags}</span>
+												<span>{item.desc}</span>
 											</div>
 											<div className='table-main__inner'>
 												<span>{item.viewsCount}</span>
