@@ -123,7 +123,7 @@ const ProductForm = () => {
 	}
 
 	const onSubmit: SubmitHandler<ProductInputs> = async data => {
-		const sizes = data.sizes.length > 0 ? data.sizes : data.sizes.split(',')
+		const sizes = Array.isArray(data.sizes) ? data.sizes : data.sizes.split(',')
 
 		const productData = {
 			title: data.title,

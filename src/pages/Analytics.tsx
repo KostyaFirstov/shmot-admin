@@ -8,6 +8,8 @@ import axios from '../axios'
 import { LoadingProperty } from '../redux/slices/auth'
 import NotFound from '../components/NotFound'
 import { RequestState } from '../redux/slices/requests'
+import TableReviews from '../components/Tables/TableReviews'
+import TableRequests from '../components/Tables/TableRequests'
 
 export type ReviewState = {
 	_id: number
@@ -19,8 +21,8 @@ export type ReviewState = {
 }
 
 const Analytics = () => {
-	const [requests, setRequests] = React.useState<RequestState[]>()
-	const [reviews, setReviews] = React.useState<ReviewState[]>()
+	const [requests, setRequests] = React.useState<RequestState[]>([])
+	const [reviews, setReviews] = React.useState<ReviewState[]>([])
 	const [isMounted, setIsMounted] = React.useState(
 		LoadingProperty.STATUS_LOADING
 	)
@@ -68,53 +70,36 @@ const Analytics = () => {
 									<h2>Запросы по популярности</h2>
 								</div>
 								<div className='card-members__list'>
-									{requests?.map(req => (
-										<Link to='/' className='card-members__item'>
-											<div className='card-members__image'>
-												<h3>{req.popular}</h3>
-											</div>
-											<div className='card-members__name'>{req.text}</div>
-											<div className='card-members__profile'>
-												<span>{req.isApproved ? 'Виден всем' : 'Скрыт'}</span>
-											</div>
-											<div className='card-members__change'>Изменить</div>
-										</Link>
-									))}
+									<TableRequests
+										headers={[
+											'Текст запроса',
+											'Видимость',
+											'Кол. ведённых раз'
+										]}
+										requests={requests}
+										status={isMounted}
+									/>
 								</div>
 							</div>
 							<div className='statistic__chart'>
-								{requests && <DoughnutChart stats={requests} />}
+								<DoughnutChart stats={requests} />
 							</div>
 						</div>
 						<div className='statistic__panel'>
-							<div className='statistic__chart'>
-								{reviews && <PieChart stats={reviews} />}
-							</div>
 							<div className='statistic__card statistic__card-members'>
 								<div className='card-members__title'>
 									<h2>Обзоры по популярности</h2>
 								</div>
 								<div className='card-members__list'>
-									{reviews?.map(review => (
-										<Link to={'/'} className='card-members__item'>
-											<div className='card-members__image'>
-												<h3>{review.viewsCount}</h3>
-											</div>
-											<div className='card-members__name'>
-												<h3>{review.title}</h3>
-											</div>
-											<div className='card-members__name'>
-												<h3>{review.tags}</h3>
-											</div>
-											<div className='card-members__status'>
-												<span>
-													<TimeAgo date={review.createdAt} />
-												</span>
-											</div>
-											<div className='card-members__profile'>Смотреть</div>
-										</Link>
-									))}
+									<TableReviews
+										headers={['Название', 'Описание', 'Просмотры', 'Дата']}
+										reviews={reviews}
+										status={isMounted}
+									/>
 								</div>
+							</div>
+							<div className='statistic__chart'>
+								<PieChart stats={reviews} />
 							</div>
 						</div>
 					</div>

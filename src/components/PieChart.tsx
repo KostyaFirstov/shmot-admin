@@ -17,20 +17,20 @@ const PieChart: React.FC<IPieChartProps> = ({ stats }) => {
 				label: 'просмотров',
 				data: stats.map(label => label.viewsCount),
 				backgroundColor: [
-					'rgba(255, 99, 132, 0.2)',
-					'rgba(54, 162, 235, 0.2)',
-					'rgba(255, 206, 86, 0.2)',
-					'rgba(75, 192, 192, 0.2)',
-					'rgba(153, 102, 255, 0.2)',
-					'rgba(255, 159, 64, 0.2)'
+					'#23CFC9',
+					'#485563',
+					'#F5F5F5',
+					'#2cb1b0',
+					'#369296',
+					'#3f747d'
 				],
 				borderColor: [
-					'rgba(255, 99, 132, 1)',
-					'rgba(54, 162, 235, 1)',
-					'rgba(255, 206, 86, 1)',
-					'rgba(75, 192, 192, 1)',
-					'rgba(153, 102, 255, 1)',
-					'rgba(255, 159, 64, 1)'
+					'#23CFC9',
+					'#485563',
+					'#F5F5F5',
+					'#2cb1b0',
+					'#369296',
+					'#3f747d'
 				],
 				borderWidth: 1
 			}

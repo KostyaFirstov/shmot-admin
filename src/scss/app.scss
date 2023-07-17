@@ -24,50 +24,6 @@ body {
 	}
 }
 
-.theme-switcher {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	justify-content: space-between;
-	border: 4px solid $gray-medium-color;
-	padding: 10px;
-	border-radius: $usual-radius;
-	width: 100%;
-	margin: 0 auto;
-	position: relative;
-	z-index: 5;
-	background-color: $gray-medium-color;
-
-	&::after {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 50%;
-		height: 100%;
-		background-color: #fff;
-		z-index: -1;
-		border-radius: $usual-radius;
-		// transform: translateX(100%);
-		transition: 0.15s ease;
-		box-shadow: 0px 8px 6px rgba(28, 29, 34, 0.06);
-	}
-
-	svg {
-		width: 20px;
-		height: 20px;
-	}
-
-	&__item {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	&.dark::after {
-		transform: translateX(100%);
-	}
-}
-
 .wrapper {
 	max-width: $container-width;
 	margin: 0 auto;
@@ -206,6 +162,7 @@ body {
 		border: 1px solid $gray-medium-color;
 		padding: 10px;
 		border-radius: $small-radius;
+		overflow: hidden;
 
 		img {
 			width: 38px;
@@ -372,11 +329,6 @@ body {
 			overflow-y: auto;
 		}
 	}
-
-	// .statistic__card-members
-
-	&__card-members {
-	}
 }
 
 .card-members {
@@ -388,40 +340,25 @@ body {
 		font-size: $fz-desc;
 	}
 
-	// .card-members__list
-
-	&__list {
-	}
-
-	// .card-members__item
-
 	&__item {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(3, 1fr);
 		align-items: center;
+		grid-gap: 8px;
+		justify-content: space-between;
 		padding: 4px 0;
 		border-top: 1px solid $gray-light-color;
 		border-bottom: 1px solid $gray-light-color;
 	}
 
-	// .card-members__image
-
 	&__image {
-	}
-
-	// .card-members__name
-
-	&__name {
-	}
-
-	// .card-members__date
-
-	&__date {
-	}
-
-	// .card-members__profile
-
-	&__profile {
+		img {
+			width: 46px;
+			height: 46px;
+			object-fit: scale-down;
+			border-radius: 100%;
+			border: 1px solid $brand-color;
+		}
 	}
 }
 
@@ -435,9 +372,6 @@ body {
 			flex: 1;
 			text-align: center;
 		}
-	}
-
-	&-main {
 	}
 }
 
@@ -464,12 +398,19 @@ body {
 		&__inner {
 			display: flex;
 			align-items: center;
-			grid-gap: 10px;
 
-			&-image img {
-				max-width: 80px;
-				width: 100%;
-				border-radius: $small-radius;
+			h3 {
+				max-height: 42px;
+				overflow: hidden;
+			}
+
+			&-image {
+				margin-right: 10px;
+				img {
+					max-width: 80px;
+					width: 100%;
+					border-radius: $small-radius;
+				}
 			}
 		}
 
@@ -483,6 +424,7 @@ body {
 			border-radius: $small-radius;
 			padding: 16px 0 16px 14px;
 			position: relative;
+			grid-gap: 10px;
 
 			&-outer {
 				position: relative;
@@ -662,14 +604,10 @@ body {
 		position: relative;
 	}
 
-	// .account__info
-
 	&__info {
 		display: flex;
 		align-items: center;
 	}
-
-	// .account__image
 
 	&__image {
 		width: 140px;
@@ -680,13 +618,6 @@ body {
 		flex-shrink: 0;
 		margin-right: 10px;
 	}
-
-	// .account__name
-
-	&__name {
-	}
-
-	// .account__details
 
 	&__details {
 		text-align: right;
@@ -704,5 +635,77 @@ body {
 		right: 10px;
 		font-size: $fz-base;
 		font-weight: 500;
+	}
+}
+
+@media screen and (max-width: 1240px) {
+	body {
+		font-size: 14px;
+	}
+
+	.statistic__wrapper {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.statistic__panel {
+		grid-template-columns: 1fr;
+	}
+
+	.card-members__list h3 {
+		word-wrap: break-word;
+	}
+
+	.card-members__list .table-main__remove {
+		top: 6px;
+		transform: unset;
+		right: 6px;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.statistic {
+		&__wrapper {
+			grid-gap: 12px;
+		}
+		&__item {
+			padding: 10px;
+		}
+	}
+
+	.table-main__inner {
+		max-width: 98px;
+		overflow: hidden;
+	}
+
+	.sidebar {
+		max-width: 200px;
+	}
+}
+@media screen and (max-width: 768px) {
+	.sidebar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 1000;
+		max-width: 260px;
+		background-color: #fff;
+	}
+}
+@media screen and (max-width: 568px) {
+	.account__wrapper {
+		flex-direction: column;
+	}
+
+	.statistic__wrapper {
+		grid-template-columns: repeat(1, 1fr);
+		grid-gap: 6px;
+	}
+
+	.table-main__remove {
+		top: 0;
+		right: 0;
+		width: 18px;
+		height: 18px;
+		transform: unset;
 	}
 }

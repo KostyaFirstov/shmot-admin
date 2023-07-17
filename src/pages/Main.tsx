@@ -9,6 +9,7 @@ import StatisticBlock from '../components/StatisticBlock'
 import { LoadingProperty, selectAccount } from '../redux/slices/auth'
 import NotFound from '../components/NotFound'
 import { useSelector } from 'react-redux'
+import TableOrders from '../components/Tables/TableOrders'
 
 export type AccountState = {
 	_id: number
@@ -102,7 +103,8 @@ const Main = () => {
 			name: 'Доход',
 			param: `${percIncome?.param} ₽`,
 			growth: percIncome?.error ? percIncome.error > 0 : null,
-			percent: percIncome?.error ? +percIncome.error.toFixed(2) : 0
+			percent: percIncome?.error ? +percIncome.error.toFixed(2) : 0,
+			link: '/admin/orders'
 		},
 		{
 			icon: (
@@ -128,7 +130,8 @@ const Main = () => {
 			name: 'Пользователей',
 			param: percUser ? percUser.param : '',
 			growth: percUser ? percUser.error > 0 : null,
-			percent: percUser ? percUser?.error : 0
+			percent: percUser ? percUser?.error : 0,
+			link: '/admin/users'
 		},
 		{
 			icon: (
@@ -153,7 +156,8 @@ const Main = () => {
 			),
 			name: 'Заказов',
 			param: `${orders.length}`,
-			growth: percUser?.error ? Boolean(percUser.error) : null
+			growth: percUser?.error ? Boolean(percUser.error) : null,
+			link: '/admin/orders'
 		},
 		{
 			icon: (
@@ -295,11 +299,14 @@ const Main = () => {
 											return (
 												<Link
 													key={index}
-													to={'/'}
+													to={`/admin/user-add/${user._id}/edit`}
 													className='card-members__item'
 												>
 													<div className='card-members__image'>
-														<img src={user.avatar} alt='user' />
+														<img
+															src={`http://localhost:5000${user.avatar}`}
+															alt='user'
+														/>
 													</div>
 													<div className='card-members__name'>
 														<h3>{user.username}</h3>
@@ -322,31 +329,11 @@ const Main = () => {
 										<div className='card-members__title'>
 											<h2>Последние заказы</h2>
 										</div>
-										{orders.map((order, index) => {
-											return (
-												<Link
-													key={index}
-													to={'/'}
-													className='card-members__item'
-												>
-													<div className='card-members__image'>
-														<h3>{order.userName}</h3>
-													</div>
-													<div className='card-members__name'>
-														<h3>{order.products.length}</h3>
-													</div>
-													<div className='card-members__status'>
-														<span>{order.status}</span>
-													</div>
-													<div className='card-members__date'>
-														<TimeAgo date={order.createdAt} />
-													</div>
-													<div className='card-members__price'>
-														{order.price} ₽
-													</div>
-												</Link>
-											)
-										})}
+										<TableOrders
+											headers={['Пользователь', 'Статус', 'Цена', 'Дата']}
+											orders={orders}
+											status={isMounted}
+										/>
 									</div>
 								</div>
 							</div>

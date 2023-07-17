@@ -165,6 +165,7 @@
 .category {
 	&__btns {
 		display: flex;
+		flex-wrap: wrap;
 		margin-top: 6px;
 		gap: 6px;
 	}
@@ -194,4 +195,7 @@
 
 .active::after {
 	content: 'x';
+}
+
+@media screen and (max-width: 568px) {
 }

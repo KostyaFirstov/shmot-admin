@@ -10,27 +10,29 @@ interface IDoughnutChartProps {
 }
 
 const DoughnutChart: React.FC<IDoughnutChartProps> = ({ stats }) => {
+	const filtredStats = stats.filter(val => val.popular > 0)
+
 	const data = {
-		labels: stats.map(label => label.text),
+		labels: filtredStats.map(label => label.text),
 		datasets: [
 			{
 				label: 'Искали раз',
-				data: stats.map(vote => vote.popular),
+				data: filtredStats.map(vote => vote.popular),
 				backgroundColor: [
-					'rgba(255, 99, 132, 0.2)',
-					'rgba(54, 162, 235, 0.2)',
-					'rgba(255, 206, 86, 0.2)',
-					'rgba(75, 192, 192, 0.2)',
-					'rgba(153, 102, 255, 0.2)',
-					'rgba(255, 159, 64, 0.2)'
+					'#23CFC9',
+					'#485563',
+					'#F5F5F5',
+					'#2cb1b0',
+					'#369296',
+					'#3f747d'
 				],
 				borderColor: [
-					'rgba(255, 99, 132, 1)',
-					'rgba(54, 162, 235, 1)',
-					'rgba(255, 206, 86, 1)',
-					'rgba(75, 192, 192, 1)',
-					'rgba(153, 102, 255, 1)',
-					'rgba(255, 159, 64, 1)'
+					'#23CFC9',
+					'#485563',
+					'#F5F5F5',
+					'#2cb1b0',
+					'#369296',
+					'#3f747d'
 				],
 				borderWidth: 1
 			}
